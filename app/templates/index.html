@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TRACE ONWARD — Follow journeys, not lists.</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #F4F0E8;
+            color: #20262B;
+            min-height: 100vh;
+        }
+
+        .page {
+            width: min(1180px, 92%);
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 32px 0;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 4px;
+        }
+
+        .tag {
+            font-size: 13px;
+            color: #677069;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 70px;
+            align-items: center;
+            min-height: calc(100vh - 100px);
+            padding: 35px 0 70px;
+        }
+
+        .eyebrow {
+            color: #C46F52;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-family: Georgia, serif;
+            font-weight: 400;
+            font-size: clamp(52px, 6vw, 88px);
+            line-height: 0.95;
+            max-width: 650px;
+        }
+
+        .hero-copy {
+            margin-top: 28px;
+            max-width: 530px;
+            line-height: 1.7;
+            color: #59615D;
+            font-size: 17px;
+        }
+
+        .statement {
+            margin-top: 38px;
+            padding-left: 18px;
+            border-left: 3px solid #C46F52;
+            font-family: Georgia, serif;
+            font-size: 20px;
+            font-style: italic;
+        }
+
+        .assistant-card {
+            background: rgba(255, 255, 255, 0.64);
+            border: 1px solid rgba(32, 38, 43, 0.10);
+            border-radius: 28px;
+            padding: 28px;
+            box-shadow: 0 24px 70px rgba(32, 38, 43, 0.12);
+            backdrop-filter: blur(18px);
+        }
+
+        .assistant-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .assistant-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #C46F52;
+            display: grid;
+            place-items: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .assistant-title h2 {
+            font-size: 16px;
+        }
+
+        .assistant-title p {
+            font-size: 12px;
+            color: #7A827D;
+            margin-top: 3px;
+        }
+
+        .chat-box {
+            min-height: 260px;
+            max-height: 330px;
+            overflow-y: auto;
+            background: #EEE9DF;
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 14px;
+        }
+
+        .message {
+            max-width: 84%;
+            padding: 12px 14px;
+            border-radius: 15px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+
+        .assistant-message {
+            background: white;
+            border-bottom-left-radius: 4px;
+        }
+
+        .user-message {
+            background: #20262B;
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-input-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            border: 1px solid #D4D0C7;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 12px;
+            padding: 13px 14px;
+            outline: none;
+            color: #20262B;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #C46F52;
+        }
+
+        #messageInput {
+            flex: 1;
+        }
+
+        button {
+            border: 0;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        #sendButton {
+            background: #20262B;
+            color: white;
+            padding: 0 22px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        #sendButton:hover {
+            background: #C46F52;
+        }
+
+        .lead-section {
+            border-top: 1px solid #DDD8CE;
+            margin-top: 24px;
+            padding-top: 22px;
+        }
+
+        .lead-section h3 {
+            font-family: Georgia, serif;
+            font-size: 22px;
+            font-weight: 400;
+            margin-bottom: 5px;
+        }
+
+        .lead-section p {
+            color: #737A76;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+        }
+
+        textarea {
+            grid-column: 1 / -1;
+            resize: vertical;
+            min-height: 75px;
+        }
+
+        #leadButton {
+            grid-column: 1 / -1;
+            background: #C46F52;
+            color: white;
+            border-radius: 12px;
+            padding: 13px;
+            font-weight: 700;
+        }
+
+        #leadButton:hover {
+            opacity: 0.9;
+        }
+
+        .status {
+            font-size: 13px;
+            margin-top: 10px;
+            min-height: 17px;
+        }
+
+        .footer-note {
+            color: #8E9A88;
+            margin-top: 32px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 850px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 45px;
+            }
+
+            h1 {
+                font-size: 58px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            textarea,
+            #leadButton {
+                grid-column: 1;
+            }
+
+            header .tag {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <header>
+        <div class="logo">TRACE ONWARD</div>
+        <div class="tag">One journey leads to another.</div>
+    </header>
+
+    <main class="hero">
+
+        <section>
+
+            <div class="eyebrow">REAL JOURNEYS. REMIXED.</div>
+
+            <h1>
+                Follow journeys,<br>
+                not lists.
+            </h1>
+
+            <p class="hero-copy">
+                Discover journeys that were actually lived.
+                Save the traces that inspire you, remix them into your own
+                route, and leave something behind for the next traveler.
+            </p>
+
+            <div class="statement">
+                Don't just visit. Leave a trace.
+            </div>
+
+            <p class="footer-note">
+                Discover → Save → Remix → Live → Leave your trace
+            </p>
+
+        </section>
+
+
+        <section class="assistant-card">
+
+            <div class="assistant-header">
+
+                <div class="assistant-icon">T</div>
+
+                <div class="assistant-title">
+                    <h2>Ask TRACE</h2>
+                    <p>Your guide to TRACE ONWARD</p>
+                </div>
+
+            </div>
+
+
+            <div class="chat-box" id="chatBox">
+
+                <div class="message assistant-message">
+                    Hi. I’m TRACE. Ask me how the platform works,
+                    how to discover real journeys, or how to remix a Trace.
+                </div>
+
+            </div>
+
+
+            <div class="chat-input-row">
+
+                <input
+                    id="messageInput"
+                    type="text"
+                    placeholder="Ask TRACE something..."
+                >
+
+                <button id="sendButton">
+                    Ask
+                </button>
+
+            </div>
+
+
+            <div class="lead-section">
+
+                <h3>Leave your trace early.</h3>
+
+                <p>
+                    Join the early-access list and hear when TRACE ONWARD opens.
+                </p>
+
+                <div class="form-grid">
+
+                    <input
+                        id="nameInput"
+                        type="text"
+                        placeholder="Your name"
+                    >
+
+                    <input
+                        id="phoneInput"
+                        type="tel"
+                        placeholder="Phone number"
+                    >
+
+                    <textarea
+                        id="leadMessageInput"
+                        placeholder="What interests you about TRACE ONWARD?"
+                    ></textarea>
+
+                    <button id="leadButton">
+                        Join early access
+                    </button>
+
+                </div>
+
+                <div
+                    id="leadStatus"
+                    class="status">
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    const chatBox = document.getElementById("chatBox");
+    const messageInput = document.getElementById("messageInput");
+    const sendButton = document.getElementById("sendButton");
+
+    let history = [];
+
+
+    function addMessage(text, type) {
+
+        const message = document.createElement("div");
+
+        message.classList.add(
+            "message",
+            type === "user"
+                ? "user-message"
+                : "assistant-message"
+        );
+
+        message.textContent = text;
+
+        chatBox.appendChild(message);
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+
+    async function sendMessage() {
+
+        const text = messageInput.value.trim();
+
+        if (!text) {
+            return;
+        }
+
+        addMessage(text, "user");
+
+        messageInput.value = "";
+
+        sendButton.disabled = true;
+        sendButton.textContent = "...";
+
+
+        try {
+
+            const response = await fetch("/api/sohbet", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    message: text,
+                    history: history
+                })
+
+            });
+
+
+            const data = await response.json();
+
+
+            if (!response.ok || !data.basari) {
+
+                throw new Error(
+                    data.hata || "Something went wrong."
+                );
+
+            }
+
+
+            addMessage(
+                data.response,
+                "assistant"
+            );
+
+
+            history.push({
+                role: "user",
+                content: text
+            });
+
+            history.push({
+                role: "assistant",
+                content: data.response
+            });
+
+
+        } catch (error) {
+
+            addMessage(
+                "I couldn't reach TRACE right now. Please try again.",
+                "assistant"
+            );
+
+        } finally {
+
+            sendButton.disabled = false;
+            sendButton.textContent = "Ask";
+
+        }
+    }
+
+
+    sendButton.addEventListener(
+        "click",
+        sendMessage
+    );
+
+
+    messageInput.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+
+        }
+    );
+
+
+    document.getElementById("leadButton")
+        .addEventListener(
+            "click",
+            async function () {
+
+                const name =
+                    document.getElementById("nameInput")
+                    .value
+                    .trim();
+
+                const phone =
+                    document.getElementById("phoneInput")
+                    .value
+                    .trim();
+
+                const message =
+                    document.getElementById("leadMessageInput")
+                    .value
+                    .trim();
+
+                const status =
+                    document.getElementById("leadStatus");
+
+
+                if (!name || !phone) {
+
+                    status.textContent =
+                        "Please enter your name and phone number.";
+
+                    return;
+                }
+
+
+                try {
+
+                    const response = await fetch(
+                        "/api/leads",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+
+                            body: JSON.stringify({
+                                name: name,
+                                phone: phone,
+                                message: message
+                            })
+
+                        }
+                    );
+
+
+                    const data =
+                        await response.json();
+
+
+                    if (!response.ok || !data.basari) {
+
+                        throw new Error(
+                            data.hata || "Could not save."
+                        );
+
+                    }
+
+
+                    status.textContent =
+                        "You're on the early-access list. ✓";
+
+
+                    document.getElementById("nameInput").value = "";
+                    document.getElementById("phoneInput").value = "";
+                    document.getElementById("leadMessageInput").value = "";
+
+
+                } catch (error) {
+
+                    status.textContent =
+                        "Your information could not be saved.";
+
+                }
+
+            }
+        );
+
+</script>
+
+</body>
+</html>
